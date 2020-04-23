@@ -1,4 +1,5 @@
-# Notch Datatable
+# Datatable
+The only data table you will ever need
 ## What is this?
 This is a custom data table that aims to solve common data table problems 
 ```html
@@ -60,8 +61,9 @@ export class AppComponent implements OnInit {
         'Sms'
       ],
       singleActions: [
+        'View',
+        'Update',
         'Delete',
-        'Message'
       ]
 
     }
@@ -82,15 +84,15 @@ export class AppComponent implements OnInit {
       case 'singleaction':
 
         if (data.action === 'View') {
-          // this.router.navigate(['/tenants/status/' + data.data.id]);
+          // this.router.navigate(['/view/' + data.data.id]);
 
-        } else if (data.action === 'View License') {
-         // this.router.navigate(['/tenants/license/' + data.data.id]);
+        } else if (data.action === 'Update') {
+         // this.router.navigate(['/Update/' + data.data.id]);
 
         } else if (data.action === 'Delete') {
           // @ts-ignore
          // document.querySelector("[data-target='#deleteLicenseModal'").click()
-          // this.onModalDelete(data.data.id)
+      
 
         }
         break;

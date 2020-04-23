@@ -57,7 +57,7 @@
     <!--sdsdsds dsdsds-->
   </div>
   <div class="data-table-container">
-    <table cellspacing="0" width="100% ">
+    <table cellspacing="0" width="100% " [class]="tableClass">
       <thead>
         <tr>
           <th
@@ -96,14 +96,15 @@
               <span style="width: 20px;"></span>
             </span>
 
-            <span
+            <button
+            title='sort list'
               class="sort-button ml-2"
               (click)="headClicked(head)"
               *ngIf="head.key !== 'action' && head.key !== 'checkbox'"
               id="{{ head.key }}-icon"
             >
               <i class="fa fa-angle-down"></i>
-            </span>
+            </button>
           </th>
         </tr>
       </thead>
@@ -162,7 +163,7 @@
             </span>
             <span class="each-useful-body" *ngIf="head.key !== 'action' && head.key !== 'checkbox'">
              
-              <span *ngIf="!dateFields[head.key] && !head.pipe">{{
+              <span>{{
                 head.transform
                   ? head.transform(row[head.key], row)
                   : row[head.key]

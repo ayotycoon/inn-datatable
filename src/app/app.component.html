@@ -7,8 +7,13 @@ This is an Example using the ayo-datatable package
 
 
 
-  <ayo-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
-    (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource">
+  <ayo-datatable
+  [tableClass]="' table-bordered  table-hover'"
+  
+  [dataChanged]="dataTable.dataChangedObs" 
+  [options]="dataTable.options" 
+  [heads]="dataTable.heads"
+  (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource">
   </ayo-datatable>
 
 </div>

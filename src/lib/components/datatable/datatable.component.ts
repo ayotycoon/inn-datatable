@@ -20,14 +20,7 @@ export class DatatableComponent implements OnInit {
   cache = {
     checkBoxHeadId: ''
   };
-  dateFields = {
-    createdAt: true,
-    updatedAt: true,
-    createdDate: true,
-    createdOn: true,
-    endDate: true,
-    paymentDueDate: true,
-  };
+ 
 
   headHash = {};
   tableclass = 'a' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -37,6 +30,7 @@ export class DatatableComponent implements OnInit {
   paginateArrayIndex = 1;
   totalAvailablePagination = 1;
 
+  @Input() tableClass;
   @Input() options;
   @Input() heads;
   @Input() bodyrows;

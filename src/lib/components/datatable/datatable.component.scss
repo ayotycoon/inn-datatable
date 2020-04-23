@@ -12,9 +12,9 @@
  padding-bottom: 100px;
 }
   .each-useful-body {
-            display: inline-block;
+            display: inline;
             min-width: 100px;
-            max-height: 50px;
+           // max-height: 50px;
             overflow: hidden;
         }
         .other-body {
@@ -35,6 +35,7 @@
 .sort-button {
   cursor: pointer;
   border: none;
+  
 }
 .custom-control-label{
   position: relative;
