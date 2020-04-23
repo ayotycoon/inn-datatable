@@ -10,11 +10,6 @@ This is a custom data table that aims to solve common data table problems
 ```
 npm i ayo-datatable
 ```
-### Css Dependences
-
-this table requires you have bootstrap css and font awesome installed in your project
-
-import { DatatableModule } from 'ayo-datatable';
 ### Sample usage
 
 app.module.ts

@@ -1,0 +1,30 @@
+{
+  "name": "ayo-datatable",
+  "version": "1.0.1",
+  "private": false,
+  "dependencies": {
+    "@angular/animations": "~8.2.14",
+    "@angular/common": "~8.2.14",
+    "@angular/compiler": "~8.2.14",
+    "@angular/core": "~8.2.14",
+    "@angular/forms": "~8.2.14",
+    "@angular/platform-browser": "~8.2.14",
+    "@angular/platform-browser-dynamic": "~8.2.14",
+    "@angular/router": "~8.2.14",
+    "ayo-datatable": "^1.0.0",
+    "ng-packagr": "^9.1.1",
+    "rxjs": "~6.4.0",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.9.1"
+  },
+  "main": "bundles/ayo-datatable.umd.js",
+  "module": "fesm5/ayo-datatable.js",
+  "es2015": "fesm2015/ayo-datatable.js",
+  "esm5": "esm5/ayo-datatable.js",
+  "esm2015": "esm2015/ayo-datatable.js",
+  "fesm5": "fesm5/ayo-datatable.js",
+  "fesm2015": "fesm2015/ayo-datatable.js",
+  "typings": "ayo-datatable.d.ts",
+  "metadata": "ayo-datatable.metadata.json",
+  "sideEffects": false
+}

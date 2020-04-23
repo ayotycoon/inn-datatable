@@ -1,0 +1,204 @@
+<div *ngIf="bodyrows" class="t">
+  <div class="text-muted row mb-1 top-options">
+    <div class="col-12 mt-2 col-lg-9 text-left">
+   <ayo-dropdown>
+        <div class="d-inline-block text-left mr-2">
+          <button toggle-parent *ngIf="
+                    options && options.bulkActions && options.bulkActions.length > 0
+                  " class="btn btn-outline-primary btn-sm">
+            ACTIONS
+            <span><img src="img/caret_down_blue.svg" width="13" alt="" /></span>
+          </button>
+          <div toggle class='border rounded bg-white' style='width: 200px'>
+            <a (click)="emitBulkAction(action)" *ngFor="let action of options.bulkActions" class='p-2 list-group-item-action dropdown-item'>
+              {{ action }}</a>
+          </div>
+        </div>
+   </ayo-dropdown>
+      <div class="d-inline-block text-left mr-2">
+        <select
+          style="height: 30px; position: relative; top: 2px;"
+          class="search border rounded"
+          #paginateSelect
+          (change)="changePagination(paginateSelect.value)"
+        >
+          <option>10</option>
+          <option>20</option>
+          <option>30</option>
+          <option>40</option>
+          <option>50</option>
+          <option>60</option>
+          <option>70</option>
+          <option>80</option>
+          <option>90</option>
+          <option>100</option>
+        </select>
+      </div>
+      <div *ngIf="refreshing" class="d-inline-block text-left mr-2">
+        <i><small>Refreshing... </small></i>
+        <i class="fa fa-spinner"></i>
+      </div>
+      <div
+        *ngIf="bodyrows && bodyrows.length === 0"
+        class="d-inline-block text-left mr-2 text-muted"
+      >
+        <i class="fa fa-info-circle"></i> No data to show
+      </div>
+    </div>
+    <div class="col-12 mt-2 col-md-6 col-lg-3 text-right">
+      <input
+        #searchInput
+        class="pl-2 border rounded search"
+        placeholder="Search"
+        (input)="search(searchInput.value)"
+      />
+    </div>
+
+    <!--sdsdsds dsdsds-->
+  </div>
+  <div class="data-table-container">
+    <table cellspacing="0" width="100% ">
+      <thead>
+        <tr>
+          <th
+            style="position: relative;"
+            *ngFor="let head of heads; index as headIndex"
+            class="th-sm"
+          >
+            <div
+              *ngIf="head.key === 'checkbox'"
+              class="custom-control custom-checkbox d-block text-center other-body"
+            >
+              <input
+                id="{{ tableclass + '-checkbox-head' + headIndex }}"
+                type="checkbox"
+                class="custom-control-input text-center"
+              />
+
+              <label
+                (click)="
+                  headClicked(head, tableclass + '-checkbox-head' + headIndex)
+                "
+                class="custom-control-label"
+                for="{{ tableclass + '-checkbox-head' + headIndex }}"
+              ></label>
+            </div>
+            <div *ngIf="head.key === 'action'" class='other-body'>
+              {{ head.title }}
+            </div>
+            <span
+              class="cursor each-useful-body "
+              (click)="headClicked(head)"
+              *ngIf="head.key !== 'action' && head.key !== 'checkbox'"
+            >
+              {{ head.title }}
+
+              <span style="width: 20px;"></span>
+            </span>
+
+            <span
+              class="sort-button ml-2"
+              (click)="headClicked(head)"
+              *ngIf="head.key !== 'action' && head.key !== 'checkbox'"
+              id="{{ head.key }}-icon"
+            >
+              <i class="fa fa-angle-down"></i>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="border box-shadow-deep">
+        <tr *ngFor="let row of paginatedBodyrows; let bodyIndex = index">
+          <td
+            *ngFor="let head of heads"
+            (click)="emitViewActions(row, head.key)"
+          >
+            <div
+              *ngIf="head.key === 'checkbox'"
+              class="custom-control custom-checkbox d-block text-center other-body"
+            >
+              <input
+                (change)="itemChecked(row, $event.target.checked)"
+                id="{{ tableclass + '-checkbox' + bodyIndex }}"
+                type="checkbox"
+                class="custom-control-input text-center {{
+                  tableclass + '-checkbox'
+                }}"
+              />
+              <label
+                class="custom-control-label"
+                for="{{ tableclass + '-checkbox' + bodyIndex }}"
+              ></label>
+            </div>
+            <span class='other-body' *ngIf="head.key === 'action'">
+   
+              <ayo-dropdown [togglePosition]="{position:'left', value: '-180px'}" >
+              <span toggle-parent class="p-2">
+                <i class='fa fa-ellipsis-h'></i>
+              </span>
+
+                  <div toggle class='border rounded bg-white' style='width: 200px'>
+                  <div *ngFor="let action of options.singleActions" >
+                      <a class='p-2 list-group-item-action dropdown-item' (click)="
+                                            emitSingleAction(
+                                              action.title ? action.title : action,
+                                              row
+                                            )
+                                          " *ngIf="
+                                            !action.showIf ||
+                                            (action.showIf && action.showIf(row[head.key], row))
+                                          ">
+                        {{ action.title ? action.title : action }}
+                    
+                      </a>
+                    </div>
+                   
+                  </div>
+               
+              </ayo-dropdown>
+               
+               
+              
+            </span>
+            <span class="each-useful-body" *ngIf="head.key !== 'action' && head.key !== 'checkbox'">
+             
+              <span *ngIf="!dateFields[head.key] && !head.pipe">{{
+                head.transform
+                  ? head.transform(row[head.key], row)
+                  : row[head.key]
+              }}</span>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="float-left text-muted p-2">
+    Showing {{ min(paginate * paginateIndex, bodyrows.length) }} of
+    {{ bodyrows.length }} results
+  </div>
+  <div class="text-right text-muted p-2">
+    <button
+      (click)="nextPaginate(-1)"
+      *ngIf="paginateIndex !== 1"
+      class="mr-1 cursor btn btn-small-l btn-primary"
+    >
+      previous
+    </button>
+    <b>{{ paginateIndex }} </b> / {{ totalAvailablePagination }}
+    <button
+      (click)="nextPaginate(1)"
+      *ngIf="paginateIndex < totalAvailablePagination"
+      class="ml-1 cursor btn btn-small-l btn-primary"
+    >
+      Next
+    </button>
+  </div>
+</div>
+
+<div class="text-center p-2 text-muted" *ngIf="!bodyrows">
+  <i class="fa fa-spinner"></i> Loading data
+</div>
+
+<br />
+<br />
