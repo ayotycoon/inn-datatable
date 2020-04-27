@@ -1,19 +1,23 @@
-Documentation is <a href='https://www.npmjs.com/package/ayo-datatable'>Here</a>
-<br />
-This is an Example using the ayo-datatable package
-<br />
+
 
 <div class='container'>
+Documentation is <a href='https://www.npmjs.com/package/inn-datatable'>Here</a>
+<br />
+This is an Example using the inn-datatable package
+<br />
+loading data from <a target='_blank'
+  href='https://jsonplaceholder.typicode.com/comments'>https://jsonplaceholder.typicode.com/comments</a>
+<br />
+<br />
 
 
-
-  <ayo-datatable
-  [tableClass]="' table-bordered  table-hover'"
-  
+  <inn-datatable
+  [tableContainerClass]="'custom-class'"  
+  [tableClass]="' table-bordered  table-hover'"  
   [dataChanged]="dataTable.dataChangedObs" 
   [options]="dataTable.options" 
   [heads]="dataTable.heads"
   (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource">
-  </ayo-datatable>
+  </inn-datatable>
 
 </div>

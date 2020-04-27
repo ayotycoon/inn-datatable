@@ -3,25 +3,25 @@ The only data table you will ever need
 ## What is this?
 This is a custom data table that aims to solve common data table problems 
 ```html
-<a href='https://ayotycoon.github.io/ayo-datatable-example'>live Example</a>
+<a href='https://ayotycoon.github.io/inn-datatable-example'>live Example</a>
 ```
 
 ### Install
 
 ```
-npm i ayo-datatable
+npm i inn-datatable
 ```
 ### Css Dependences
 
 this table requires you have bootstrap css and font awesome installed in your project
 
-import { DatatableModule } from 'ayo-datatable';
+import { DatatableModule } from 'inn-datatable';
 ### Sample usage
 
 app.module.ts
 ```typescript
 ...
-import { DatatableModule } from 'ayo-datatable';
+import { DatatableModule } from 'inn-datatable';
 
 @NgModule({
   ...,
@@ -33,9 +33,11 @@ import { DatatableModule } from 'ayo-datatable';
 ```
 app.component.html
 ```html
-<ayo-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+<!--Only heads and bodyrows attribute are required-->
+<inn-datatable   [tableContainerClass]="'custom-class'"  
+  [tableClass]="' table-bordered  table-hover'"   [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
     (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource">
-  </ayo-datatable>
+  </inn-datatable>
 ```
 app.component.ts
 ```typescript
@@ -46,10 +48,13 @@ export class AppComponent implements OnInit {
   dataTable = {
     dataChangedObs: new BehaviorSubject(null),
     heads: [
-      { title: 'checkbox', key: 'checkbox' },
+     { title: 'checkbox', key: 'checkbox' },
       { title: 'Name', key: 'name' },
       { title: 'Email', key: 'email' },
       { title: 'Body', key: 'body' },
+      { title: 'Sex', key: 'nested.sex' },
+      { title: 'createdDate', key: 'createdDate', transform:(a,b) => new Date(a).toLocaleDateString() },
+
 
      // { title: "Creation date", key: "createdDate", transform: (fieldData, rowData) => new Date(fieldData).toLocaleDateString() },
 

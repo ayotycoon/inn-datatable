@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'ayo-datatable',
+  selector: 'inn-datatable',
   templateUrl: './datatable.component.html',
   styleUrls: ['./datatable.component.scss']
 })
@@ -20,7 +20,7 @@ export class DatatableComponent implements OnInit {
   cache = {
     checkBoxHeadId: ''
   };
- 
+
 
   headHash = {};
   tableclass = 'a' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -30,6 +30,7 @@ export class DatatableComponent implements OnInit {
   paginateArrayIndex = 1;
   totalAvailablePagination = 1;
 
+  @Input() tableContainerClass;
   @Input() tableClass;
   @Input() options;
   @Input() heads;
@@ -111,12 +112,12 @@ export class DatatableComponent implements OnInit {
             this.headHash[headData.key] = { sorted: true };
           }
 
-          if (parseInt(a[headData.key]) && parseInt(b[headData.key])) {
+          if (parseInt(this.getData(headData.key, a)) && parseInt(this.getData(headData.key, b))) {
             return a[headData.key] - b[headData.key];
           }
 
-          const nameA = a[headData.key] ? (a[headData.key] + '').toUpperCase() : ''; // ignore upper and lowercase
-          const nameB = b[headData.key] ? (b[headData.key] + '').toUpperCase() : ''; // ignore upper and lowercase
+          const nameA = this.getData(headData.key, a) ? (this.getData(headData.key, a) + '').toUpperCase() : ''; // ignore upper and lowercase
+          const nameB = this.getData(headData.key, b) ? (this.getData(headData.key, b) + '').toUpperCase() : ''; // ignore upper and lowercase
           if (nameA < nameB) {
             return -1;
           }
@@ -169,9 +170,18 @@ export class DatatableComponent implements OnInit {
     );
 
   }
-  nextPaginate(n) {
-    this.paginateIndex += (n);
-    this.paginateArrayIndex += (n * this.paginate);
+  nextPaginate(n, forced?: number) {
+    if (forced && typeof forced !== 'number') {
+      return;
+    }
+    if (forced) {
+      this.paginateIndex = forced;
+      this.paginateArrayIndex = (forced * this.paginate);
+    } else {
+      this.paginateIndex += (n);
+      this.paginateArrayIndex += (n * this.paginate);
+    }
+
     this.startPaginate();
     this.resetCheckBox();
   }
@@ -237,6 +247,43 @@ export class DatatableComponent implements OnInit {
     }
     ['View/Edit', 'View / Edit', 'View', 'Edit'].forEach(action => this.feedback.emit({ type: 'singleaction', action, data }));
 
+  }
+  getData(key, rowData) {
+    const periodArr = key.split('.');
+    if (periodArr) {
+      let stageData = rowData;
+      periodArr.forEach(eachPeriod => {
+        stageData = stageData[eachPeriod]
+
+      })
+
+      return stageData;
+
+
+    }
+
+    return rowData[key]
+
+  }
+  populateShortcutPagnation(start, end) {
+    const a = 5;
+    // this.paginateIndex
+    const arr = []
+
+    for (let i = start; i <= end; i++) {
+      arr.push(i)
+      
+    }
+
+    return arr;
+  }
+  mouseOverPagnation($event){
+   const el =  $event.target.querySelector('.pagnate-display');
+   if(!el || !$event){
+     return;
+   }
+   el.style.top = `-${el.clientHeight}px`
+   el.style.left = `-${(el.clientWidth /2) - ($event.target.clientWidth/2)}px`
   }
   OnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());

@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
       { title: 'Name', key: 'name' },
       { title: 'Email', key: 'email' },
       { title: 'Body', key: 'body' },
+      { title: 'Sex', key: 'nested.sex' },
       { title: 'createdDate', key: 'createdDate', transform:(a,b) => new Date(a).toLocaleDateString() },
 
      // { title: "Creation date", key: "createdDate", transform: (fieldData, rowData) => new Date(fieldData).toLocaleDateString() },
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     fetch('https://jsonplaceholder.typicode.com/comments').then(_ => _.json()).then(data => {
-      this.dataSource = data.map(_ => {return {..._, createdDate: Number(new Date)}});
+      this.dataSource = data.map(_ => {return {..._, createdDate: Number(new Date), nested:{sex: 'male'}}});
       this.dataTable.dataChangedObs.next(true);
     });
   }
