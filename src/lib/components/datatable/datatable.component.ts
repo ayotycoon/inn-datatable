@@ -252,38 +252,41 @@ export class DatatableComponent implements OnInit {
     const periodArr = key.split('.');
     if (periodArr) {
       let stageData = rowData;
-      periodArr.forEach(eachPeriod => {
-        stageData = stageData[eachPeriod]
+      periodArr.forEach((eachPeriod) => {
+        if (stageData) {
+          stageData = stageData[eachPeriod];
+        }
 
-      })
+
+      });
 
       return stageData;
 
 
     }
 
-    return rowData[key]
+    return rowData[key];
 
   }
   populateShortcutPagnation(start, end) {
     const a = 5;
     // this.paginateIndex
-    const arr = []
+    const arr = [];
 
     for (let i = start; i <= end; i++) {
-      arr.push(i)
-      
+      arr.push(i);
+
     }
 
     return arr;
   }
-  mouseOverPagnation($event){
-   const el =  $event.target.querySelector('.pagnate-display');
-   if(!el || !$event){
-     return;
-   }
-   el.style.top = `-${el.clientHeight}px`
-   el.style.left = `-${(el.clientWidth /2) - ($event.target.clientWidth/2)}px`
+  mouseOverPagnation($event) {
+    const el = $event.target.querySelector('.pagnate-display');
+    if (!el || !$event) {
+      return;
+    }
+    el.style.top = `-${el.clientHeight}px`;
+    el.style.left = `-${(el.clientWidth / 2) - ($event.target.clientWidth / 2)}px`;
   }
   OnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
