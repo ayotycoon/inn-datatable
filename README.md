@@ -5,10 +5,10 @@ This is a custom data table that aims to solve common data table problems
 
 
 
-[Live Example](https://ayotycoon.github.io/inn-datatable-example)
-[Contribute and star on github](https://github.com/ayotycoon/inn-datatable-example)
-[Npm](https://www.npmjs.com/package/inn-datatable)
-[ayotycoon](https://github.com/ayotycoon)
+- [Live Example](https://ayotycoon.github.io/inn-datatable-example)
+- [Contribute and star on github](https://github.com/ayotycoon/inn-datatable-example)
+- [Npm](https://www.npmjs.com/package/inn-datatable)
+- [ayotycoon](https://github.com/ayotycoon)
 
 
 ### Install
@@ -138,12 +138,12 @@ Basic usage just need  the ```bodyrows``` and the ```heads```  attribute to work
 
 
 ```
-### app.component.ts
+
 ```heads``` must be an array of object which contains keys ```title``` and ```key ```
 ```title```: contains the text that will show on the table head
 ```key```: contains the object property that is matched with the associated title in the rows array. 
 Example title can be full name, but the key which is used in the array is just ```name```. in this case, **full name** will be the ```title``` and **name** will be the ```key```
-
+### app.component.ts
 ```typescript
 
 export  class  AppComponent  implements  OnInit {
