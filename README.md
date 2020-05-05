@@ -2,9 +2,14 @@
 The only data table you will ever need
 ## What is this?
 This is a custom data table that aims to solve common data table problems 
-```html
-<a href='https://ayotycoon.github.io/inn-datatable-example'>live Example</a>
-```
+
+
+
+[Live Example](https://ayotycoon.github.io/inn-datatable-example)
+[Contribute and star on github](https://github.com/ayotycoon/inn-datatable-example)
+[Npm](https://www.npmjs.com/package/inn-datatable)
+[ayotycoon](https://github.com/ayotycoon)
+
 
 ### Install
 
@@ -15,7 +20,6 @@ npm i inn-datatable
 
 this table requires you have bootstrap css and font awesome installed in your project
 
-import { DatatableModule } from 'inn-datatable';
 ### Sample usage
 
 app.module.ts
@@ -34,9 +38,15 @@ import { DatatableModule } from 'inn-datatable';
 app.component.html
 ```html
 <!--Only heads and bodyrows attribute are required-->
-<inn-datatable   [tableContainerClass]="'custom-class'"  
-  [tableClass]="' table-bordered  table-hover'"   [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
-    (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource">
+<inn-datatable 
+[tableContainerClass]="'custom-class'"  
+
+[tableClass]="' table-bordered  table-hover'"
+[dataChanged]="dataTable.dataChangedObs"
+[options]="dataTable.options"
+[heads]="dataTable.heads"
+(feedback)="dataFeedBackObsListener($event)"
+[bodyrows]="dataSource">
   </inn-datatable>
 ```
 app.component.ts
@@ -53,7 +63,7 @@ export class AppComponent implements OnInit {
       { title: 'Email', key: 'email' },
       { title: 'Body', key: 'body' },
       { title: 'Sex', key: 'nested.sex' },
-      { title: 'createdDate', key: 'createdDate', transform:(a,b) => new Date(a).toLocaleDateString() },
+      { title: 'Created Date', key: 'createdDate', transform:(fieldData,rowData) => new Date(a).toLocaleDateString() },
 
 
      // { title: "Creation date", key: "createdDate", transform: (fieldData, rowData) => new Date(fieldData).toLocaleDateString() },
@@ -95,8 +105,7 @@ export class AppComponent implements OnInit {
          // this.router.navigate(['/Update/' + data.data.id]);
 
         } else if (data.action === 'Delete') {
-          // @ts-ignore
-         // document.querySelector("[data-target='#deleteLicenseModal'").click()
+// perform custom delete action
       
 
         }
@@ -172,12 +181,14 @@ rows: [
 
 
 ## Advanced Usage ( More common )
-```[dataChanged]```  expects a BehaviorSubject of a true or false value. This is used to notify the table that the either the **heads** or the **bodyrows** data chas changed, to the table should change accordingly.
-```[options]``` Contains extra options
-```[heads]```  expects an array of object. that contains the head title and key value
-```[bodyrows]```  expects an array of object.
-```(feedback)``` expects a callback function. this emits actions back to the parent component
+- ```[dataChanged]```  expects a BehaviorSubject of a true or false value. This is used to notify the table that the either the **heads** or the **bodyrows** data chas changed, to the table should change accordingly.
+- ```[options]``` Contains extra options, please scroll down for possible options
+- ```[heads]```  expects an array of object. that contains the head title and key value
+- ```[bodyrows]```  expects an array of object.
+- ```(feedback)``` expects a callback function. this emits actions back to the parent component
+- ```[tableContainerClass]``` expects a string of optional classes you want to affect the table container
 
+- ```[tableClass]``` expects a string of optional classes you want to affect the table itself
 ### app.component.html
 
 ```html
@@ -192,14 +203,19 @@ rows: [
 
 
 ```
+possible options
 ### app.component.ts
-```dataTable.heads``` must be an array of object which contains keys 
 
-```dataTable.options.singleActions``` : actions to display on each body row . must be an array of string or an array of ```{title: string, showIf?: Function}```
 
-```dataTable.options.bulkActions``` : actions to display on alll rows . must be an array of string
+-  ```options.debug``` : defaults to false, if checked, some actions the libary performs will be logged to the console
+-  ```options.emitClickActions``` : defaults to ` ['View/Edit', 'View / Edit', 'View', 'Edit']`, list pf single actions to emit when a row in the datatable is clicked
 
-```dataFeedBackObsListener``` emits back action events performed on the datatable , so you can the select those actions and act on them accordingly
+
+-  ```options.singleActions``` : actions to display on each body row . must be an array of string or an array of ```{title: string, showIf?: Function}```
+
+-  ```options.bulkActions``` : actions to display on alll rows . must be an array of string
+
+-  ```dataFeedBackObsListener``` emits back action events performed on the datatable , so you can the select those actions and act on them accordingly
 
 
 ```typescript

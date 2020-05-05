@@ -1,12 +1,12 @@
 /*
 @author Sunmola Ayokunle
 @version 1.0.1
-@docs https://github.com/ayotycoon/docs/blob/master/notch-datatable.md
+@docs https://www.npmjs.com/package/inn-datatable
 @lastModified 27 March 2020
 
 */
 
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, SubscriptionLike } from 'rxjs';
 import { Observable } from 'rxjs';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
@@ -16,6 +16,21 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./datatable.component.scss']
 })
 export class DatatableComponent implements OnInit {
+  @Input() tableContainerClass: string;
+  @Input() tableClass: string;
+  @Input() options: {
+    debug?: boolean; // default false
+    emitClickActions?: string[]; // default ['View/Edit', 'View / Edit', 'View', 'Edit']
+    bulkActions: string[];
+    singleActions: string[] | { title: string; showIf: (fieldData: any, rowData: any) => any }[];
+  };
+  @Input() heads: { title: string; key: string; transform?: (fieldData: any, rowData: any) => any }[];
+  @Input() bodyrows: any[];
+  @Input() dataChanged: Observable<boolean>;
+  @Output() feedback: EventEmitter<{ type: string; action?: string; data: any[] }> = new EventEmitter<any>(null);
+
+
+
   refreshing = false;
   cache = {
     checkBoxHeadId: ''
@@ -30,27 +45,27 @@ export class DatatableComponent implements OnInit {
   paginateArrayIndex = 1;
   totalAvailablePagination = 1;
 
-  @Input() tableContainerClass;
-  @Input() tableClass;
-  @Input() options;
-  @Input() heads;
-  @Input() bodyrows;
   staticBodyrows = [];
-  @Input() dataChanged: Observable<any>;
-  subs = [];
-  @Output() feedback: EventEmitter<any> = new EventEmitter<any>(null);
+
+  subs: SubscriptionLike[] = [];
+
   paginatedBodyrows = [];
   selectedrows = [];
 
   constructor() { }
-
+  logger = (text) => {
+    if (this.options && this.options.debug) {
+      console.log(text);
+    }
+  }
   ngOnInit() {
 
     if (this.dataChanged) {
       this.subs.push(this.dataChanged.subscribe(changed => {
         if (changed) {
           this.refreshing = true;
-          console.log('detected data change');
+
+          this.logger('detected data change');
 
           setTimeout(() => {
             this.refreshing = false;
@@ -243,6 +258,10 @@ export class DatatableComponent implements OnInit {
   emitViewActions(data, key) {
 
     if (key === 'checkbox' || key === 'action') {
+      return;
+    }
+    if (this.options.emitClickActions) {
+      this.options.emitClickActions.forEach(action => this.feedback.emit({ type: 'singleaction', action, data }));
       return;
     }
     ['View/Edit', 'View / Edit', 'View', 'Edit'].forEach(action => this.feedback.emit({ type: 'singleaction', action, data }));
