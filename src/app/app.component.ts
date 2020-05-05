@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Component } from '@angular/core';
 import * as Prism from 'prismjs';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -25,19 +26,21 @@ import 'prismjs/components/prism-scss';
 export class AppComponent implements OnInit {
 
   code = {
-    rawHtml: `
+    rawHtml:
+      `
       <inn-datatable 
-       [tableContainerClass]="'custom-class'" \n
+        [tableContainerClass]="'custom-class'" \n
         [tableClass]="' table-bordered  table-hover'"
-    [dataChanged]="dataTable.dataChangedObs" 
-    [options]="dataTable.options"
-     [heads]="dataTable.heads"
+        [dataChanged]="dataTable.dataChangedObs" 
+        [options]="dataTable.options"
+        [heads]="dataTable.heads"
 
-    (feedback)="dataFeedBackObsListener($event)" 
-    [bodyrows]="dataSource">
-  </inn-datatable>`,
-    rawTypescript: `
-    import { OnInit } from '@angular/core';
+        (feedback)="dataFeedBackObsListener($event)" 
+        [bodyrows]="dataSource">
+      </inn-datatable>`,
+    rawTypescript:
+      `
+import { OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Component } from '@angular/core';
 
@@ -58,7 +61,8 @@ export class AppComponent implements OnInit {
             { title: 'Email', key: 'email' },
             { title: 'Body', key: 'body' },
             { title: 'Sex', key: 'nested.sex' },
-            { title: 'createdDate', key: 'createdDate', transform: (a, b) => new Date(a).toLocaleDateString() },
+      { title: 'Created Date (using pipes)', key: 'createdDate', pipe: { pipe: this.datePipe, args: ['yyyy-MM-dd'] } },
+      { title: 'Created Date (using transform)', key: 'createdDate', transform: (a, b) => new Date(a).toLocaleDateString() },
 
             // { title: "Creation date", key: "createdDate", transform: (fieldData, rowData) => new Date(fieldData).toLocaleDateString() },
 
@@ -78,12 +82,18 @@ export class AppComponent implements OnInit {
     };
 
     dataSource: any[] = [];
+    
+  // makesure you have added DatePipe to your providers in your app.module
+    constructor(private datePipe: DatePipe) {
 
+  }
     ngOnInit() {
-    fetch('https://jsonplaceholder.typicode.com/comments').then(_ => _.json()).then(data => {
-            this.dataSource = data.map(_ => { return { ..._, createdDate: Number(new Date), nested: { sex: 'male' } } });
-            this.dataTable.dataChangedObs.next(true);
-        });
+      fetch('https://jsonplaceholder.typicode.com/comments')
+        .then(_ => _.json()).then(data => {
+              this.dataSource = data.map(_ => 
+                {return { ..._, createdDate: Number(new Date), nested: { sex: 'male' } } });
+              this.dataTable.dataChangedObs.next(true);}
+          );
     }
 
     dataFeedBackObsListener = data => {
@@ -124,9 +134,10 @@ export class AppComponent implements OnInit {
       { title: 'Email', key: 'email' },
       { title: 'Body', key: 'body' },
       { title: 'Sex', key: 'nested.sex' },
-      { title: 'createdDate', key: 'createdDate', transform:(a,b) => new Date(a).toLocaleDateString() },
+      { title: 'Created Date (using pipes)', key: 'createdDate', pipe: { pipe: this.datePipe, args: ['yyyy-MM-dd'] } },
+      { title: 'Created Date (using transform)', key: 'createdDate', transform: (a, b) => new Date(a).toLocaleDateString() },
 
-     // { title: "Creation date", key: "createdDate", transform: (fieldData, rowData) => new Date(fieldData).toLocaleDateString() },
+      // { title: "Creation date", key: "createdDate", transform: (fieldData, rowData) => new Date(fieldData).toLocaleDateString() },
 
       { title: 'Action', key: 'action' }
     ],
@@ -143,7 +154,10 @@ export class AppComponent implements OnInit {
     }
   };
 
-  dataSource: any [];
+  dataSource: any[];
+  constructor(private datePipe: DatePipe) {
+
+  }
 
   ngOnInit() {
     this.code.highlightedHtml = Prism.highlight(this.code.rawHtml, Prism.languages.html, 'html');
@@ -151,7 +165,7 @@ export class AppComponent implements OnInit {
     this.code.highlightedTypescript = Prism.highlight(this.code.rawTypescript, Prism.languages.typescript, 'typescript');
     Prism.highlightAll();
     fetch('https://jsonplaceholder.typicode.com/comments').then(_ => _.json()).then(data => {
-      this.dataSource = data.map(_ => {return {..._, createdDate: Number(new Date), nested:{sex: 'male'}}});
+      this.dataSource = data.map(_ => { return { ..._, createdDate: Number(new Date), nested: { sex: 'male' } } });
       this.dataTable.dataChangedObs.next(true);
     });
   }
@@ -165,11 +179,11 @@ export class AppComponent implements OnInit {
           // this.router.navigate(['/tenants/status/' + data.data.id]);
 
         } else if (data.action === 'View License') {
-         // this.router.navigate(['/tenants/license/' + data.data.id]);
+          // this.router.navigate(['/tenants/license/' + data.data.id]);
 
         } else if (data.action === 'Delete') {
           // @ts-ignore
-         // document.querySelector("[data-target='#deleteLicenseModal'").click()
+          // document.querySelector("[data-target='#deleteLicenseModal'").click()
           // this.onModalDelete(data.data.id)
 
         }

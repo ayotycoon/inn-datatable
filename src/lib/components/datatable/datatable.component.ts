@@ -6,14 +6,15 @@
 
 */
 
-import { BehaviorSubject, Subscription, SubscriptionLike } from 'rxjs';
+import {  SubscriptionLike } from 'rxjs';
 import { Observable } from 'rxjs';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'inn-datatable',
   templateUrl: './datatable.component.html',
-  styleUrls: ['./datatable.component.scss']
+  styleUrls: ['./datatable.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatatableComponent implements OnInit {
   @Input() tableContainerClass: string;
@@ -24,7 +25,11 @@ export class DatatableComponent implements OnInit {
     bulkActions: string[];
     singleActions: string[] | { title: string; showIf: (fieldData: any, rowData: any) => any }[];
   };
-  @Input() heads: { title: string; key: string; transform?: (fieldData: any, rowData: any) => any }[];
+  @Input() heads: {
+    title: string; key: string;
+    pipe?: { pipe: Function; args: string[] };
+    transform?: (fieldData: any, rowData: any) => any;
+  }[];
   @Input() bodyrows: any[];
   @Input() dataChanged: Observable<boolean>;
   @Output() feedback: EventEmitter<{ type: string; action?: string; data: any[] }> = new EventEmitter<any>(null);
@@ -52,7 +57,7 @@ export class DatatableComponent implements OnInit {
   paginatedBodyrows = [];
   selectedrows = [];
 
-  constructor() { }
+  constructor(private changeDetectionRef: ChangeDetectorRef) { }
   logger = (text) => {
     if (this.options && this.options.debug) {
       console.log(text);
@@ -73,6 +78,7 @@ export class DatatableComponent implements OnInit {
             this.paginateIndex = 1;
             this.paginateArrayIndex = 1;
             this.initializeTable();
+            this.changeDetectionRef.detectChanges()
 
           }, 1000);
         }
@@ -81,6 +87,7 @@ export class DatatableComponent implements OnInit {
 
     this.staticBodyrows = this.bodyrows ? [...this.bodyrows] : [];
     this.initializeTable();
+    this.changeDetectionRef.detectChanges()
 
   }
 
@@ -306,6 +313,18 @@ export class DatatableComponent implements OnInit {
     }
     el.style.top = `-${el.clientHeight}px`;
     el.style.left = `-${(el.clientWidth / 2) - ($event.target.clientWidth / 2)}px`;
+  }
+  processFieldWithPipe(pipe, field) {
+    if (!pipe.pipe) {
+      this.logger('Cannot find pipe function');
+      return '';
+    }
+
+    return pipe.pipe.transform(field, ...pipe.args);
+
+
+
+
   }
   OnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());

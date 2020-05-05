@@ -166,7 +166,7 @@
               <span>{{
                 head.transform
                   ? head.transform(getData(head.key, row), row)
-                  : getData(head.key, row)
+                  : head.pipe? processFieldWithPipe(head.pipe,getData(head.key, row)) :  getData(head.key, row)
               }}</span>
             </span>
           </td>

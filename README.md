@@ -26,7 +26,7 @@ app.module.ts
 ```typescript
 ...
 import { DatatableModule } from 'inn-datatable';
-
+import { DatePipe } from '@angular/common';
 @NgModule({
   ...,
   imports: [...,
@@ -63,7 +63,9 @@ export class AppComponent implements OnInit {
       { title: 'Email', key: 'email' },
       { title: 'Body', key: 'body' },
       { title: 'Sex', key: 'nested.sex' },
-      { title: 'Created Date', key: 'createdDate', transform:(fieldData,rowData) => new Date(a).toLocaleDateString() },
+      { title: 'Created Date (using pipes)', key: 'createdDate', pipe: { pipe: this.datePipe, args: ['yyyy-MM-dd'] } },
+      { title: 'Created Date (using transform)', key: 'createdDate', transform: (a, b) => new Date(a).toLocaleDateString() },
+
 
 
      // { title: "Creation date", key: "createdDate", transform: (fieldData, rowData) => new Date(fieldData).toLocaleDateString() },
@@ -85,6 +87,10 @@ export class AppComponent implements OnInit {
   };
 
   dataSource: any [];
+  // makesure you have added DatePipe to your providers in your app.module
+    constructor(private datePipe: DatePipe) {
+
+  }
 
   ngOnInit() {
     fetch('https://jsonplaceholder.typicode.com/comments').then(_ => _.json()).then(data => {
@@ -233,7 +239,12 @@ export  class  AppComponent  implements  OnInit {
     { title:  "ID", key:  "id" },
 
     { title:  "Full Name", key:  "name",transform: (fieldText,rowData) => fieldText.replace(',', ' ') },
+          { title: 'Created Date (using pipes)', key: 'createdDate', pipe: { pipe: this.datePipe, args: ['yyyy-MM-dd'] } },
+
+
     // transform property is completely optional. It is used to modify a text.the first argument contains the row value and the second argument contains the entire row data. transform property must return the string you want to show in that row and firld. Example if you want to replace the ',' in name firlds to space
+
+    // pipe property is completely optional. It is used to modify a text using angular pipes, you can pass in angular default pipes oe your own custom pipe. pipe property must contain an object of {pipe: AngularPipe, args: atring []}. args should contain the arguments that should be passed to the pipe
     ],
     options: {
 
