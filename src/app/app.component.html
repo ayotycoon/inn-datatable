@@ -1,30 +1,39 @@
-
-
 <div class='container'>
-Documentation is <a href='https://www.npmjs.com/package/inn-datatable'>Here</a>
-<br />
+  Documentation is <a href='https://www.npmjs.com/package/inn-datatable'>Here</a>
+  <br />
 
- <a href='https://github.com/ayotycoon/inn-datatable-example'>Contribute and star libary on github</a>
-<br />
- <a href='https://www.npmjs.com/package/inn-datatable'>Npm</a>
-<br />
- <a href='https://github.com/ayotycoon'>Ayotycoon</a>
-<br />
-This is an Example using the inn-datatable package
-<br />
-loading data from <a target='_blank'
-  href='https://jsonplaceholder.typicode.com/comments'>https://jsonplaceholder.typicode.com/comments</a>
-<br />
-<br />
+  <a href='https://github.com/ayotycoon/inn-datatable-example'>Contribute and star libary on github</a>
+  <br />
+  <a href='https://www.npmjs.com/package/inn-datatable'>Npm</a>
+  <br />
+  <a href='https://github.com/ayotycoon'>Ayotycoon</a>
+  <br />
+  This is an Example using the inn-datatable package
+  <br />
+  loading data from <a target='_blank'
+    href='https://jsonplaceholder.typicode.com/comments'>https://jsonplaceholder.typicode.com/comments</a>
+  <br />
+  <br />
 
 
-  <inn-datatable
-  [tableContainerClass]="'custom-class'"  
-  [tableClass]="' table-bordered  table-hover'"  
-  [dataChanged]="dataTable.dataChangedObs" 
-  [options]="dataTable.options" 
-  [heads]="dataTable.heads"
-  (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource">
+  <inn-datatable [tableContainerClass]="'custom-class'" [tableClass]="' table-bordered  table-hover'"
+    [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+    (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource">
   </inn-datatable>
+  <hr />
+  <h3>Code </h3>
 
+  app.component.html
+  <br />
+  <div [innerHTML]='code.highlightedHtml' class="border rounded p-1 code">
+
+  </div>
+  <br />
+  <br />
+  <br />
+  app.component.ts
+  <br />
+  <div [innerHTML]='code.highlightedTypescript' class="border rounded p-1 code">
+
+  </div>
 </div>
