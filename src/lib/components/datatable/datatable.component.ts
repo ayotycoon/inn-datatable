@@ -30,7 +30,6 @@ export class DatatableComponent implements OnInit {
   @Output() feedback: EventEmitter<{ type: string; action?: string; data: any[] }> = new EventEmitter<any>(null);
 
 
-  noOfRowsToDisplay = 10;
   noOfRows = [10]
   refreshing = false;
   cache = {
@@ -65,8 +64,8 @@ export class DatatableComponent implements OnInit {
     if (this.options ) {
 
       if(this.options.noOfRowsToDisplay){
-        this.noOfRowsToDisplay = this.options.noOfRowsToDisplay
-        this.noOfRows = [this.noOfRowsToDisplay]
+        this.paginate = this.options.noOfRowsToDisplay
+        this.noOfRows = [this.paginate]
       }
       if(this.options.debug){
         this.logger('Debug mode is on. do not forget to turn it off when you are done', 'red')
@@ -92,17 +91,7 @@ export class DatatableComponent implements OnInit {
             this.paginateIndex = 1;
             this.paginateArrayIndex = 1;
 
-            if (this.bodyrows.length > this.noOfRowsToDisplay) {
-
-
-              this.noOfRows = []
-
-              for (let i = 1; i <= Math.ceil(this.bodyrows.length / this.noOfRowsToDisplay); i++) {
-                this.noOfRows.push(this.noOfRowsToDisplay * i)
-
-              }
-
-            }
+     
 
 
             this.initializeTable();
@@ -211,6 +200,20 @@ export class DatatableComponent implements OnInit {
 
   }
   initializeTable = () => {
+
+
+    if ((this.bodyrows || []).length > this.paginate) {
+
+
+      this.noOfRows = []
+
+      for (let i = 1; i <= Math.ceil(this.bodyrows.length / this.paginate); i++) {
+        this.noOfRows.push(this.paginate * i)
+
+      }
+
+    }
+
     this.heads.forEach(head => {
       this.headHash[head.key] = { sorted: false };
 

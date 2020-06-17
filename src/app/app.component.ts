@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       { title: 'Action', key: 'action' }
     ],
     options: <DataTableTypes.Options>{
-      noOfRowsToDisplay: 200,
+      noOfRowsToDisplay: 10,
       debug: true,
       emitClickActions: [],
       bulkActions: [
