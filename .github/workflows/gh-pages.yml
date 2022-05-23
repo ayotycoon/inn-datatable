@@ -19,7 +19,7 @@ jobs:
 
     - name: Init new repo in dist folder and commit generated files
       run: |
-        cd build
+        cd docs
         git init
         git add -A
         git config --local user.email "se.ayokunle@gmail.com"
