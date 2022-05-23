@@ -25,6 +25,7 @@ export class DatatableComponent implements OnInit {
   @Input() tableClass: string;
   @Input() options: Options;
   @Input() heads: Head[];
+  hideAbleHeads: Head[] = [];
   @Input() bodyrows: any[];
   @Input() dataChanged: BehaviorSubject<boolean>;
   @Output() feedback: EventEmitter<{ type: string; action?: string; data: any[] }> = new EventEmitter<any>(null);
@@ -37,7 +38,7 @@ export class DatatableComponent implements OnInit {
   };
 
 
-  headHash = {};
+  headHash: { sorted: boolean, isHidden: boolean } = {} as any;
   tableId = 'a' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   paginate = 10;
@@ -106,6 +107,10 @@ export class DatatableComponent implements OnInit {
     this.initializeTable();
  //    this.ref.detectChanges()
 
+  }
+
+  toggleHide = (headData: Head) => {
+    this.headHash[headData.key].isHidden = !this.headHash[headData.key].isHidden;
   }
 
   headClicked = (headData: Head, refElement?) => {
@@ -215,7 +220,11 @@ export class DatatableComponent implements OnInit {
     }
 
     this.heads.forEach(head => {
-      this.headHash[head.key] = { sorted: false };
+      if(head.hideable && !this.headHash[head.key]){
+        this.hideAbleHeads.push(head);
+      }
+      this.headHash[head.key] = { sorted: false, isHidden: false };
+
 
 
     });

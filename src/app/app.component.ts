@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     dataChangedObs: new BehaviorSubject(null),
     heads: <DataTableTypes.Head[]>[
       { title: 'checkbox', key: 'checkbox' },
-      { title: 'Name', key: 'name' },
+      { title: 'Name', key: 'name' , hideable: true},
       { title: 'Email', key: 'email', transform: (fieldData, rowData) => this.upperCasePipe.transform(fieldData)},
       { title: 'Body', key: 'body' },
       { title: 'Gender', key: 'nested.gender' },

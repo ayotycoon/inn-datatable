@@ -11,6 +11,7 @@ export interface Options {
 
 export interface Head {
   title: string;
+  hideable: boolean;
   key: string;
 
   type?: 'date'| 'number' | 'string'

@@ -4,14 +4,24 @@
    <ayo-dropdown>
         <div class="d-inline-block text-left mr-2">
           <button toggle-parent *ngIf="
-                    options && options.bulkActions && options.bulkActions.length > 0
+                    (options && options.bulkActions && options.bulkActions.length > 0) || hideAbleHeads.length>0
                   " class="btn btn-outline-primary btn-sm">
             ACTIONS
             <span><img src="img/caret_down_blue.svg" width="13" alt="" /></span>
           </button>
           <div toggle class='border rounded bg-white' style='width: 200px'>
-            <a (click)="emitBulkAction(action)" *ngFor="let action of options.bulkActions" class='p-2 list-group-item-action dropdown-item'>
+            <a (click)="emitBulkAction(action)" *ngFor="let action of options.bulkActions" class='p-2 list-group-item-action dropdown-item cursor'>
               {{ action }}</a>
+            <a *ngFor="let head of hideAbleHeads" (click)="toggleHide(head)" class='p-2 list-group-item-action dropdown-item cursor'>
+              <span *ngIf="headHash[head.key].isHidden">Show</span>
+              <span *ngIf="!headHash[head.key].isHidden">Hide</span>
+              {{ head.title }}
+            
+  
+            </a>
+
+
+
           </div>
         </div>
    </ayo-dropdown>
@@ -57,6 +67,7 @@
             *ngFor="let head of heads; index as headIndex"
             class="th-sm"
           >
+          <div *ngIf="!headHash[head.key].isHidden">
             <div
               *ngIf="head.key === 'checkbox'"
               class="custom-control custom-checkbox d-block text-center other-body"
@@ -97,6 +108,9 @@
             >
               <i class="fa fa-angle-down"></i>
             </button>
+
+
+            </div>
           </th>
         </tr>
       </thead>
@@ -106,6 +120,7 @@
             *ngFor="let head of heads"
             (click)="emitViewActions(row, head.key)"
           >
+          <div *ngIf="!headHash[head.key].isHidden">
             <div
               *ngIf="head.key === 'checkbox'"
            
@@ -164,6 +179,7 @@
 
               <span *ngIf='head.html' [innerHTML]=" head.transform ? head.html(head.transform(getData(head.key, row), row)) : head.html(getData(head.key, row))"></span>
             </span>
+          </div>
           </td>
         </tr>
       </tbody>
