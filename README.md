@@ -1,5 +1,5 @@
 # Datatable
-The only data table you will ever need
+The only Angular data table you will ever need
 ## What is this?
 This is a custom data table that aims to solve common data table problems 
 
