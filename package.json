@@ -4,7 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
-        "build": "ng build",
+        "build": "ng build --base-href=/inn-datatable/",
         "build:lib": "node ./prepare-package.js && ng-packagr -p ng-package.json && node ./revert-package.js",
         "test": "ng test",
         "lint": "ng lint",
